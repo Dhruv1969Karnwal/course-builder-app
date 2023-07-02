@@ -17,8 +17,8 @@ const Home = () => {
       <VStack width={"full"} 
       // alignItems={["center", "flex-end"]}
       >
-        <Heading children="LEARN FROM THE EXPERTS" size={'2xl'} />
-        <Text children="Find Valuable Content At Reasonable Price ..." />
+        <Heading children="LEARN FROM THE EXPERTS" size={'2xl'} textAlign={"center"}/>
+        <Text textAlign={"center"} children="Find Valuable Content At Reasonable Price ..." />
         <Link to="/courses">
           <Button size={"lg"} colorScheme='yellow'>Explore Now</Button>
         </Link>
@@ -30,7 +30,8 @@ const Home = () => {
         
 
       <div className="container2">
-        <video autoPlay
+        <video 
+        // autoPlay
         controls 
         controlsList='nodownload nofullscreen noremoteplayback'
         disablePictureInPicture
