@@ -13,6 +13,7 @@ function App() {
         <Route path='/courses' element={<Courses />} />
       </Routes>
     </Router>
+
   );
 }
 
