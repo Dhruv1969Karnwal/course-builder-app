@@ -8,7 +8,8 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import ForgetPassword from './components/auth/ForgetPassword';
 import ResetPassword from './components/auth/ResetPassword';
-
+import Contact from './components/contact/Contact'
+import RequestCourse from './components/requestCourse/RequestCourse';
 function App() {
   return (
     <Router>
@@ -20,6 +21,8 @@ function App() {
         <Route path='/forgetpassword' element={<ForgetPassword />} />
         <Route path='/resetpassword/:token' element={<ResetPassword />} />
         <Route path='/courses' element={<Courses />} />
+        <Route path='/contact' element={<Contact />} />
+        <Route path='/request' element={<RequestCourse />} />
       </Routes>
       <Footer />
     </Router>
