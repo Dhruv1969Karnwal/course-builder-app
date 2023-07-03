@@ -68,7 +68,7 @@ export const DoughnutChat = () => {
 };
 
 function getLastYearMonth() {
-    const labels = [];
+    // const labels = [];
     const months = [
       'January',
       'February',
@@ -87,14 +87,9 @@ function getLastYearMonth() {
     // const currentMonth = 8
     const remainingMonths = months.slice(currentMonth).concat(months.slice(0, currentMonth));
   
-    for (let i = 0; i < remainingMonths.length; i++) {
-      labels.push(remainingMonths[i]);
-    }
+    // for (let i = 0; i < remainingMonths.length; i++) {
+    //   labels.push(remainingMonths[i]);
+    // }
   
-    return labels;
+    return remainingMonths;
   }
-  
-//   const lastYearMonths = getLastYearMonth();
-//   console.log(lastYearMonths);
-  
-// getLastYearMonth()
