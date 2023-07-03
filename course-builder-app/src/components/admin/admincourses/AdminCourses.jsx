@@ -1,5 +1,5 @@
 
-import { Box, Grid } from '@chakra-ui/react';
+import { Box, Grid, Text } from '@chakra-ui/react';
 import React from 'react';
 import cursor from '../../../assets/images/cursor.png';
 import SideBar from '../SideBar';
@@ -13,7 +13,7 @@ const AdminCourses = () => {
       templateColumns={['1fr', '5fr 1fr']}
     >
 
-      <Box></Box>
+      
       <SideBar />
     </Grid>
   );

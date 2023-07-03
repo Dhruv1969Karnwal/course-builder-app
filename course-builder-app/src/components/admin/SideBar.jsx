@@ -8,7 +8,7 @@ const SideBar = () => {
   return (
     <VStack
       spacing={'8'}
-      boxShadow={'-2px 0 10px rgba(107,70,193.0.5)'}
+      boxShadow={'-2px 0 10px rgba(107,70,193,0.5)'}
       p="16"
       // textAlign={'left'}
       alignItems={'flex-start'}
