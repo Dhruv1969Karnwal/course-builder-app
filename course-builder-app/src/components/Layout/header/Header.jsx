@@ -22,7 +22,7 @@ const LinkButton = ({ url = '/', title = 'Home' , onClose}) => (
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const isAuthenticated = false;
+  const isAuthenticated = true;
   const user = {
     role:"admin"
   }
@@ -42,7 +42,7 @@ const Header = () => {
         position={'fixed'}
         top={'6'}
         left={'6'}
-        zIndex={"100"}
+        zIndex={"overlay"}
       >
         <RiMenu5Fill />
       </Button>
