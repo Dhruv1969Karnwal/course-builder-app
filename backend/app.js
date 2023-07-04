@@ -4,6 +4,12 @@ import {config} from "dotenv"
 config({
     path:"./config/config.env",
 })
-const app = express()
+const app = express();
+
+import course from "./routes/CourseRoutes.js"
+import user from "./routes/UserRoutes.js"
+
+app.use("/api/v1",course)
+app.use("/api/v1",user)
 
 export default app
