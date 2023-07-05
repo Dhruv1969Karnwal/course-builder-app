@@ -1,18 +1,26 @@
-import express from 'express'
-import {config} from "dotenv"
-// import {ErrorMiddleware} from './middlewares/Error.js';
+import express from "express";
+import { config } from "dotenv";
+import ErrorMiddleware from "./middlewares/Error.js";
 
 config({
-    path:"./config/config.env",
-})
+  path: "./config/config.env",
+});
 const app = express();
 
-import course from "./routes/CourseRoutes.js"
-import user from "./routes/UserRoutes.js"
+// use Middleware
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
 
-app.use("/api/v1",course)
-app.use("/api/v1",user)
+import course from "./routes/CourseRoutes.js";
+import user from "./routes/UserRoutes.js";
 
-export default app
+app.use("/api/v1", course);
+app.use("/api/v1", user);
 
-// app.use(ErrorMiddleware)
+export default app;
+
+app.use(ErrorMiddleware);
