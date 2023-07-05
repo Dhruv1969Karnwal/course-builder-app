@@ -1,26 +1,39 @@
-import express from "express"
-import { register, login, logout, getMyProfile } from "../controllers/UserController.js";
+import express from "express";
+import {
+  register,
+  login,
+  logout,
+  getMyProfile,
+  changePassword,
+  updateProfile,
+  updateProfilePicture,
+} from "../controllers/UserController.js";
 import { isAuthenticated } from "../middlewares/Auth.js";
 
 const router = express.Router();
 
 // to register a new user
-router.route("/register").post(register)
+router.route("/register").post(register);
 
 // login a user
-router.route("/login").post(login)
+router.route("/login").post(login);
 
 // logout a user
-router.route("/logout").get(logout)
+router.route("/logout").get(logout);
 
 // get my profile
-router.route("/me").get(isAuthenticated, getMyProfile)
+router.route("/me").get(isAuthenticated, getMyProfile);
 
 // change password
+router.route("/changepassword").put(isAuthenticated, changePassword);
 
 // update profile
+router.route("/updateprofile").put(isAuthenticated, updateProfile);
 
 // update profile picture
+router
+  .route("/updateprofilepicture")
+  .put(isAuthenticated, updateProfilePicture);
 
 // forget password
 
