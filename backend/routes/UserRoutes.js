@@ -1,5 +1,5 @@
 import express from "express"
-import { register } from "../controllers/UserController.js";
+import { register, login, logout } from "../controllers/UserController.js";
 
 const router = express.Router();
 
@@ -7,8 +7,10 @@ const router = express.Router();
 router.route("/register").post(register)
 
 // login a user
+router.route("/login").post(login)
 
 // logout a user
+router.route("/logout").get(logout)
 
 // get my profile
 

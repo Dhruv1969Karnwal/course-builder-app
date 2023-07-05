@@ -1,33 +1,61 @@
-import {catchAsyncError} from "../middlewares/CatchAsyncError.js"
-import ErrorHandler from "../utils/ErrorHandler.js"
+import { catchAsyncError } from "../middlewares/CatchAsyncError.js";
+import ErrorHandler from "../utils/ErrorHandler.js";
 
-import {User} from "../models/User.js"
-import { sendToken } from "../utils/SendToken.js"
+import { User } from "../models/User.js";
+import { sendToken } from "../utils/SendToken.js";
 
+export const register = catchAsyncError(async (req, res, next) => {
+  const { name, email, password } = req.body;
+  // const file = req.file
 
-export const register = catchAsyncError(async (req,res,next) => {
+  if (!name || !email || !password)
+    return next(new ErrorHandler("Please enter all fields", 400));
 
-    const {name, email, password} = req.body
-    // const file = req.file
+  let user = await User.findOne({ email });
 
-    if(!name || !email || !password) return next(new ErrorHandler("Please enter all fields",400))
+  if (user) return next(new ErrorHandler("User Already Exists", 409));
 
-    let user = await User.findOne({email});
+  // upload file on cloudinary
 
-    if(user) return next(new ErrorHandler("User Already Exists",409))
+  user = await User.create({
+    name,
+    email,
+    password,
+    avatar: {
+      public_id: "temp",
+      url: "temp",
+    },
+  });
 
-    // upload file on cloudinary
+  sendToken(res, user, "Registered Successfully", 201);
+});
 
-    user = await User.create({
-        name, email, password,
-        avatar:{
-            public_id:"temp",
-            url:"temp"
-        }
+export const login = catchAsyncError(async (req, res, next) => {
+  const { email, password } = req.body;
+  // const file = req.file
+
+  if (!email || !password)
+    return next(new ErrorHandler("Please enter all fields", 400));
+
+  const user = await User.findOne({ email }).select("+password");
+
+  if (!user) return next(new ErrorHandler("User Doesn't Exist", 401));
+
+  const isMatch = await user.comparePassword(password);
+  if (!isMatch)
+    return next(new ErrorHandler("Incorrect Email or Password", 401));
+
+  sendToken(res, user, `Welcome back, ${user.name}`, 200);
+});
+
+export const logout = catchAsyncError(async (req, res, next) => {
+  res
+    .status(200)
+    .cookie("token", null, {
+      expires: new Date(Date.now()),
     })
-
-    sendToken(res,user,"Registered Successfully",201)
-
-    
-
-})
+    .json({
+      success: true,
+      message: "Logged Out Successfully",
+    });
+});
