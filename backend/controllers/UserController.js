@@ -6,27 +6,32 @@ import { Course } from "../models/Course.js";
 import { sendToken } from "../utils/SendToken.js";
 import { sendEmail } from "../utils/SendEmail.js";
 import crypto from "crypto";
+import cloudinary from "cloudinary";
+import getDataUri from "../utils/DataUri.js";
 
 export const register = catchAsyncError(async (req, res, next) => {
   const { name, email, password } = req.body;
-  // const file = req.file
+  
+  const file = req.file;
 
-  if (!name || !email || !password)
+  if (!name || !email || !password || !file)
     return next(new ErrorHandler("Please enter all fields", 400));
 
   let user = await User.findOne({ email });
 
   if (user) return next(new ErrorHandler("User Already Exists", 409));
 
-  // upload file on cloudinary
+  const fileUri = getDataUri(file);
+
+  const mycloud = await cloudinary.v2.uploader.upload(fileUri.content);
 
   user = await User.create({
     name,
     email,
     password,
     avatar: {
-      public_id: "temp",
-      url: "temp",
+      public_id: mycloud.public_id,
+      url: mycloud.secure_url,
     },
   });
 
@@ -35,7 +40,6 @@ export const register = catchAsyncError(async (req, res, next) => {
 
 export const login = catchAsyncError(async (req, res, next) => {
   const { email, password } = req.body;
-  // const file = req.file
 
   if (!email || !password)
     return next(new ErrorHandler("Please enter all fields", 400));
@@ -111,7 +115,22 @@ export const updateProfile = catchAsyncError(async (req, res, next) => {
 });
 
 export const updateProfilePicture = catchAsyncError(async (req, res, next) => {
-  // add cloudinary image
+
+  const user = await User.findById(req.user._id)
+
+  const file = req.file;
+  const fileUri = getDataUri(file);
+
+  const mycloud = await cloudinary.v2.uploader.upload(fileUri.content);
+
+  await cloudinary.v2.uploader.destroy(user.avatar.public_id)
+
+  user.avatar = {
+    public_id:mycloud.public_id,
+    url:mycloud.secure_url
+  }
+
+  await user.save()
 
   res.status(200).json({
     success: true,
@@ -206,10 +225,10 @@ export const removeFromPlaylist = catchAsyncError(async (req, res, next) => {
 
   if (!course) return next(new ErrorHandler("Invalid course Id", 404));
 
-  const newPlaylist = user.playlist.filter(item => {
-    if(item.course.toString()!==course._id.toString()) return item
-  })
-  user.playlist = newPlaylist
+  const newPlaylist = user.playlist.filter((item) => {
+    if (item.course.toString() !== course._id.toString()) return item;
+  });
+  user.playlist = newPlaylist;
   await user.save();
   res.status(200).json({
     success: true,
