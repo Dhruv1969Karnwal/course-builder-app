@@ -136,6 +136,7 @@ export const updateProfilePicture = catchAsyncError(async (req, res, next) => {
     message: "Profile Picture Updated successfully",
   });
 });
+
 export const forgetPassword = catchAsyncError(async (req, res, next) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
@@ -159,6 +160,7 @@ export const forgetPassword = catchAsyncError(async (req, res, next) => {
     message: `Reset Token has been send to ${user.email}`,
   });
 });
+
 export const resetPassword = catchAsyncError(async (req, res, next) => {
   const { token } = req.params;
   const resetPasswordToken = crypto
@@ -284,6 +286,7 @@ export const deleteUser = catchAsyncError(async (req, res, next) => {
     message: "User delete successfully",
   });
 });
+
 export const deleteMyProfile = catchAsyncError(async (req, res, next) => {
   const { id } = req.user;
   const user = await User.findById(id);
