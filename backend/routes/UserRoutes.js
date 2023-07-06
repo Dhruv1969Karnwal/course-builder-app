@@ -10,9 +10,13 @@ import {
   forgetPassword,
   resetPassword,
   addToPlaylist,
-  removeFromPlaylist
+  removeFromPlaylist,
+  getAllUsers,
+  updateUserRole,
+  deleteUser,
+  deleteMyProfile
 } from "../controllers/UserController.js";
-import { isAuthenticated } from "../middlewares/Auth.js";
+import { authorizedAdmin, isAuthenticated } from "../middlewares/Auth.js";
 import singleUpload from "../middlewares/Multer.js"
 
 const router = express.Router();
@@ -28,6 +32,9 @@ router.route("/logout").get(logout);
 
 // get my profile
 router.route("/me").get(isAuthenticated, getMyProfile);
+
+// delete my profile
+router.route("/me").delete(isAuthenticated, deleteMyProfile);
 
 // change password
 router.route("/changepassword").put(isAuthenticated, changePassword);
@@ -51,5 +58,9 @@ router.route("/addtoplaylist").post(isAuthenticated, addToPlaylist);
 
 // remove from playlist
 router.route("/removefromplaylist").delete(isAuthenticated, removeFromPlaylist);
+
+router.route("/admin/users").get(isAuthenticated,authorizedAdmin ,getAllUsers);
+
+router.route("/admin/user/:id").put(isAuthenticated,authorizedAdmin ,updateUserRole).delete(isAuthenticated,authorizedAdmin ,deleteUser)
 
 export default router;
