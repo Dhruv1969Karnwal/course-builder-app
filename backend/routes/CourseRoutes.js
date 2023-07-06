@@ -4,7 +4,8 @@ import {
   createCourse,
   getCourseLecture,
   addLecture,
-  deleteCourse
+  deleteCourse,
+  deleteLecture
 } from "../controllers/CourseController.js";
 import singleUpload from "../middlewares/Multer.js";
 import {authorizedAdmin, isAuthenticated} from '../middlewares/Auth.js'
@@ -21,5 +22,6 @@ router.route("/createcourse").post(isAuthenticated,authorizedAdmin,  singleUploa
 router.route("/course/:id").get(isAuthenticated ,getCourseLecture).post(isAuthenticated, authorizedAdmin, singleUpload ,addLecture).delete(isAuthenticated, authorizedAdmin, deleteCourse)
 
 // delete lectures
+router.route("/lecture").delete(isAuthenticated,authorizedAdmin ,deleteLecture);
 
 export default router;

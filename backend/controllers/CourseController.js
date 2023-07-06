@@ -127,3 +127,33 @@ export const deleteCourse = catchAsyncError(async (req, res, next) => {
     message: "Course deleted successfully.",
   });
 });
+
+
+export const deleteLecture = catchAsyncError(async (req, res, next) => {
+  const { courseId, lectureId } = req.query;
+  const course = await Course.findById(courseId);
+  if (!course) return next(new ErrorHandler("Course not found", 404));
+
+  const lecture = course.lectures.filter((item) => {
+    if(item._id.toString() === lectureId.toString()) return item
+  })
+  console.log(lecture[0].video.public_id)
+
+  await cloudinary.v2.uploader.destroy(lecture[0].video.public_id,{
+    resource_type:"video",
+  });
+
+  course.lectures = course.lectures.filter((item) => {
+    if(item._id.toString() !== lectureId.toString()) return item
+  })
+
+  course.numOfVideos = course.lectures.length;
+
+  await course.save()
+
+
+  res.status(200).json({
+    success: true,
+    message: "Lecture deleted successfully.",
+  });
+});
