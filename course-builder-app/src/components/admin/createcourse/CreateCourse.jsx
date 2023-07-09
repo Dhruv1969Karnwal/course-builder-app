@@ -1,7 +1,7 @@
 
 import { Box, Button, Container, Grid, Heading, Image, Input, Select, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import cursor from '../../../assets/images/cursor.png';
+// import cursor from '../../../assets/images/cursor.png';
 import SideBar from '../SideBar';
 import { fileUploadCss } from '../../auth/Register';
 const categories = [
@@ -34,9 +34,9 @@ const CreateCourse = () => {
       };
   return (
     <Grid
-    css={{
-      cursor: `url(${cursor}), default`,
-    }}
+    // css={{
+    //   cursor: `url(${cursor}), default`,
+    // }}
       minH={'100vh'}
       templateColumns={['1fr', '5fr 1fr']}
     >

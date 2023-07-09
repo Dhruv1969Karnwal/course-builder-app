@@ -1,6 +1,6 @@
 import { Box, Button, Grid, HStack, Heading, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import React from 'react';
-import cursor from '../../../assets/images/cursor.png';
+// import cursor from '../../../assets/images/cursor.png';
 import SideBar from '../SideBar';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 const Users = () => {
@@ -22,9 +22,9 @@ const Users = () => {
   }
   return (
     <Grid
-    css={{
-      cursor: `url(${cursor}), default`,
-    }}
+    // css={{
+    //   cursor: `url(${cursor}), default`,
+    // }}
       minH={'100vh'}
       templateColumns={['1fr', '5fr 1fr']}
     >

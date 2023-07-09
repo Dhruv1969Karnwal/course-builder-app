@@ -10,16 +10,23 @@ import {
 } from '@chakra-ui/react';
 import {Link} from "react-router-dom"
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/actions/UserAction';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch()
+  const submitHandler = (e) => {
+    e.preventDefault()
+    dispatch(login(email, password))
+  }
   return (
     <Container h={'95vh'}>
       <VStack h={'full'} justifyContent={'center'} spacing={'16'}>
         <Heading children={'Welcome to CourseBuilder'} />
 
-        <form style={{ width: '100%' }}>
+        <form style={{ width: '100%' }} onSubmit={submitHandler}>
           <Box my={'4'}>
             <FormLabel htmlFor="email" children="Email Address" />
             <Input
