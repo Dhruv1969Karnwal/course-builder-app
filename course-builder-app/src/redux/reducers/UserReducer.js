@@ -15,14 +15,25 @@ export const userReducer = createReducer({},{
         state.isAuthenticated = false
         state.error = action.payload
     },
+    loginUserRequest:(state) => {
+        state.loading = true
+    },
+    loginUserSuccess:(state, action) => {
+        state.loading = false
+        state.isAuthenticated = true
+        state.user = action.payload
+    },
+    loginUserFail:(state,action) => {
+        state.loading = false
+        state.isAuthenticated = false
+        state.error = action.payload
+    },
 
     clearError: (state) => {
         state.error= null
-
     },
     clearMessage: (state) => {
         state.message = null
-
     },
 
 })
