@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/home/Home';
 import Header from './components/Layout/header/Header';
@@ -23,14 +23,27 @@ import Dashboard from './components/admin/dashboard/Dashboard';
 import CreateCourse from './components/admin/createcourse/CreateCourse';
 import AdminCourses from './components/admin/admincourses/AdminCourses';
 import Users from './components/admin/users/Users';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import toast, { Toaster} from 'react-hot-toast'
 
 function App() {
   window.addEventListener('contextmenu', e => {
     e.preventDefault();
   });
 
-  const { isAuthenticated, user } = useSelector(state => state.user);
+  const { isAuthenticated, user, message, error } = useSelector(state => state.user);
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    if(error){
+      toast.error(error)
+      dispatch({type:"clearError"})
+    }
+    if(message){
+      toast.success(message)
+      dispatch({type:"clearMessage"})
+    }
+  },[dispatch,error,message])
   return (
     <Router>
       <Header isAuthenticated={isAuthenticated} user={user} />
@@ -59,6 +72,7 @@ function App() {
         <Route path="/admin/users" element={<Users />} />
       </Routes>
       <Footer />
+      <Toaster />
     </Router>
   );
 }
