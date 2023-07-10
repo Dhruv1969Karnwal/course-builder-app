@@ -24,40 +24,57 @@ import CreateCourse from './components/admin/createcourse/CreateCourse';
 import AdminCourses from './components/admin/admincourses/AdminCourses';
 import Users from './components/admin/users/Users';
 import { useDispatch, useSelector } from 'react-redux';
-import toast, { Toaster} from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast';
 import { getMyProfile } from './redux/actions/UserAction';
+import { ProtectedRoute } from 'protected-route-react';
 
 function App() {
   window.addEventListener('contextmenu', e => {
     e.preventDefault();
   });
 
-  const { isAuthenticated, user, message, error } = useSelector(state => state.user);
+  const { isAuthenticated, user, message, error } = useSelector(
+    state => state.user
+  );
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
-    if(error){
-      toast.error(error)
-      dispatch({type:"clearError"})
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
     }
-    if(message){
-      toast.success(message)
-      dispatch({type:"clearMessage"})
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
     }
-  },[dispatch,error,message])
+  }, [dispatch, error, message]);
 
   useEffect(() => {
-    dispatch(getMyProfile())
-  }, [dispatch])
-  
+    dispatch(getMyProfile());
+  }, [dispatch]);
+
   return (
     <Router>
       <Header isAuthenticated={isAuthenticated} user={user} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={
+            <ProtectedRoute isAuthenticated={!isAuthenticated}>
+              <Login />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated} redirect='/profile'>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/changePassword" element={<ChangePassword />} />
         <Route path="/updateprofile" element={<UpdateProfile />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
