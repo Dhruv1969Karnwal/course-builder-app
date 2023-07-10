@@ -66,7 +66,9 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={<ProtectedRoute isAuthenticated={!isAuthenticated } redirect='/profile'>
+              <Register />
+            </ProtectedRoute>} />
         <Route
           path="/profile"
           element={
