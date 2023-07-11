@@ -24,30 +24,32 @@ import my_profile from '../../assets/images/my_profile.jpeg';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { fileUploadCss } from '../auth/Register';
 
-const Profile = () => {
-  const user = {
-    name: 'Dhruv',
-    email: 'dh@gmail.com',
-    createdAt: String(new Date().toISOString()),
-    role: 'user',
-    subscription: {
-      status: 'active',
-    },
-    playlist: [
-      {
-        course: 'sdnjd',
-        poster: my_profile,
-      },
-    ],
-  };
+const Profile = ({ user }) => {
+  // const user = {
+  //   name: 'Dhruv',
+  //   email: 'dh@gmail.com',
+  //   createdAt: String(new Date().toISOString()),
+  //   role: 'user',
+  //   subscription: {
+  //     status: 'active',
+  //   },
+  //   playlist: [
+  //     {
+  //       course: 'sdnjd',
+  //       poster: my_profile,
+  //     },
+  //   ],
+  // };
 
-  const {isOpen, onClose,onOpen} = useDisclosure()
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const removeFromPlaylistHandler = () => {};
   const changeImageSubmitHandler = (e, image) => {
     e.preventDefault();
-    console.log(image)
-  }
-
+    // console.log(image)
+  };
+  const dateStr = user.createdAT.split('T')[0];
+  const parts = dateStr.split('-');
+  const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
 
   return (
     <Container minH={'95vh'} maxW={'container.lg'} py={'8'}>
@@ -60,7 +62,7 @@ const Profile = () => {
         padding={'8'}
       >
         <VStack>
-          <Avatar boxSize={'48'} />
+          <Avatar boxSize={'48'} src={user.avatar.url} />
           <Button colorScheme="yellow" variant={'ghost'} onClick={onOpen}>
             Change Photo
           </Button>
@@ -76,12 +78,13 @@ const Profile = () => {
           </HStack>
           <HStack>
             <Text children="CreatedAt" fontWeight={'bold'} />
-            <Text children={user.createdAt.split('T')[0]} />
+            <Text children={formattedDate} />
+            {/* <Text children={user.createdAt} /> */}
           </HStack>
           {user.role !== 'admin' && (
             <HStack>
               <Text children="Subscription" fontWeight={'bold'} />
-              {user.subscription.status === 'active' ? (
+              {user.subscription && user.subscription.status === 'active' ? (
                 <Button color="yellow.500" variant={'unstyled'}>
                   Cancel Subscription
                 </Button>
@@ -102,7 +105,9 @@ const Profile = () => {
           </Stack>
         </VStack>
       </Stack>
-      <Heading children="Playlist" size={'md'} my={'8'} />
+      {user.playlist.length > 0 && (
+        <Heading children="Playlist" size={'md'} my={'8'} />
+      )}
       {user.playlist.length > 0 && (
         <Stack
           direction={['column', 'row']}
@@ -128,46 +133,48 @@ const Profile = () => {
         </Stack>
       )}
 
-      <ChangePhotoBox isOpen={isOpen} onClose={onClose} changeImageSubmitHandler={changeImageSubmitHandler}/>
+      <ChangePhotoBox
+        isOpen={isOpen}
+        onClose={onClose}
+        changeImageSubmitHandler={changeImageSubmitHandler}
+      />
     </Container>
   );
 };
 
 export default Profile;
 
-function ChangePhotoBox({isOpen, onClose, changeImageSubmitHandler}) {
-    const [image, setImage] = useState('');
-    const [imagePrev, setImagePrev] = useState('');
+function ChangePhotoBox({ isOpen, onClose, changeImageSubmitHandler }) {
+  const [image, setImage] = useState('');
+  const [imagePrev, setImagePrev] = useState('');
 
-    const changeImage = e => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-    
-        reader.readAsDataURL(file);
-    
-        reader.onloadend = () => {
-          setImagePrev(reader.result);
-          setImage(file)
-        };
-      };
-      const closeHandler = () => {
-        onClose()
-        setImage("")
-        setImagePrev('')
-      }
+  const changeImage = e => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      setImagePrev(reader.result);
+      setImage(file);
+    };
+  };
+  const closeHandler = () => {
+    onClose();
+    setImage('');
+    setImagePrev('');
+  };
   return (
     <Modal isOpen={isOpen} onClose={closeHandler}>
       <ModalOverlay backdropFilter={'blur(10px)'} />
       <ModalContent>
-      <ModalHeader>Change Photo</ModalHeader>
+        <ModalHeader>Change Photo</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Container>
-            <form onSubmit={(e) => changeImageSubmitHandler(e, image)}>
+            <form onSubmit={e => changeImageSubmitHandler(e, image)}>
               <VStack spacing={'8'}>
-                {
-                    imagePrev && <Avatar boxSize={'48'} src={imagePrev}/>
-                }
+                {imagePrev && <Avatar boxSize={'48'} src={imagePrev} />}
                 <Input
                   type="file"
                   css={{ '&::file-selector-button': fileUploadCss }}
@@ -182,7 +189,9 @@ function ChangePhotoBox({isOpen, onClose, changeImageSubmitHandler}) {
           </Container>
         </ModalBody>
         <ModalFooter>
-            <Button mr='3' onClick={closeHandler}>Cancel</Button>
+          <Button mr="3" onClick={closeHandler}>
+            Cancel
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
