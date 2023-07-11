@@ -27,13 +27,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
 import { getMyProfile } from './redux/actions/UserAction';
 import { ProtectedRoute } from 'protected-route-react';
+import Loader from './components/Layout/loader/Loader';
 
 function App() {
   window.addEventListener('contextmenu', e => {
     e.preventDefault();
   });
 
-  const { isAuthenticated, user, message, error } = useSelector(
+  const { isAuthenticated, user, message, error, loading } = useSelector(
     state => state.user
   );
 
@@ -55,7 +56,10 @@ function App() {
 
   return (
     <Router>
-      <Header isAuthenticated={isAuthenticated} user={user} />
+      {
+        loading ? (<Loader />) :
+        <>
+        <Header isAuthenticated={isAuthenticated} user={user} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
@@ -141,6 +145,8 @@ function App() {
       </Routes>
       <Footer />
       <Toaster />
+        </>
+      }
     </Router>
   );
 }
