@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 const ForgetPassword = () => {
     const [email, setEmail] = useState('');
+    
   return (
     <Container py={'19'} h={'90vh'}>
       <form>

@@ -25,27 +25,12 @@ import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { fileUploadCss } from '../auth/Register';
 
 const Profile = ({ user }) => {
-  // const user = {
-  //   name: 'Dhruv',
-  //   email: 'dh@gmail.com',
-  //   createdAt: String(new Date().toISOString()),
-  //   role: 'user',
-  //   subscription: {
-  //     status: 'active',
-  //   },
-  //   playlist: [
-  //     {
-  //       course: 'sdnjd',
-  //       poster: my_profile,
-  //     },
-  //   ],
-  // };
+
 
   const { isOpen, onClose, onOpen } = useDisclosure();
   const removeFromPlaylistHandler = () => {};
   const changeImageSubmitHandler = (e, image) => {
     e.preventDefault();
-    // console.log(image)
   };
   const dateStr = user.createdAT.split('T')[0];
   const parts = dateStr.split('-');
