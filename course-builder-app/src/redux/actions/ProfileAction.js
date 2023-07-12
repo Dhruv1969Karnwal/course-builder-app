@@ -50,4 +50,25 @@ export const changePassword =  (oldPassword, newPassword) => async dispatch => {
   }
 };
 
+export const updateProfilePicture =  (formdata) => async dispatch => {
+    try {
+      dispatch({
+        type: 'updateProfilePictureRequest',
+      });
+     const {data} =  await axios.put(`${server}/updateprofilepicture`,formdata,{
+      headers:{
+          "Content-Type":"multipart/form-data",
+      },
+      withCredentials:true,
+     })
+      dispatch({
+        type: 'updateProfilePictureSuccess',payload:data.message
+      });
+    } catch (err) {
+      dispatch({
+        type: 'updateProfilePictureFail',
+        payload: err.response.data.message,
+      });
+    }
+  };
 
