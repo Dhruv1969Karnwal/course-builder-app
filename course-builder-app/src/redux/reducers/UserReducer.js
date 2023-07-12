@@ -78,6 +78,17 @@ export const profileReducer = createReducer({},{
         state.loading = false
         state.error = action.payload
     },
+    changePasswordRequest:(state) => {
+        state.loading= true
+    },
+    changePasswordSuccess:(state, action) => {
+        state.loading = false
+        state.message = action.payload
+    },
+    changePasswordFail:(state, action) => {
+        state.loading = false
+        state.error = action.payload
+    },
     clearError: (state) => {
         state.error= null
     },
