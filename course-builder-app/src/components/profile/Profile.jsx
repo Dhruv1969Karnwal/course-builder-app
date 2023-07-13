@@ -52,8 +52,8 @@ const Profile = ({ user }) => {
       dispatch({type:"clearMessage"})
     }
   }, [dispatch, error, message])
-  const dateStr = user.createdAT.split('T')[0];
-  const parts = dateStr.split('-');
+  const dateString = user.createdAT.split('T')[0];
+  const parts = dateString.split('-');
   const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
 
   return (
