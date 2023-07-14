@@ -68,3 +68,18 @@ export const register = formdata => async dispatch => {
   }
 };
 
+// * payment action
+export const buySubscription = () => async dispatch => {
+  try {
+    dispatch({ type: 'buySubscriptionRequest' });
+
+    const { data } = await axios.get(`${server}/subscribe`, {
+      withCredentials: true,
+    });
+
+    // console.log(data)
+    dispatch({ type: 'buySubscriptionSuccess', payload: data.subscriptionId });
+  } catch (error) {
+    dispatch({ type: 'buySubscriptionFail', payload: error.response.data.message });
+  }
+};
