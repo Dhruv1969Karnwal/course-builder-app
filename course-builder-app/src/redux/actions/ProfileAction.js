@@ -88,6 +88,35 @@ export const forgetPassword = email => async dispatch => {
     });
   }
 };
+export const resetPassword = (token, password) => async dispatch => {
+  try {
+    dispatch({
+      type: 'resetPasswordRequest',
+    });
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    }
+    const { data } = await axios.put(
+      `${server}/resetpassword/${token}`,
+      {
+        password
+      },
+      config
+    );
+    dispatch({
+      type: 'resetPasswordSuccess',
+      payload: data.message,
+    });
+  } catch (err) {
+    dispatch({
+      type: 'resetPasswordFail',
+      payload: err.response.data.message,
+    });
+  }
+};
 
 export const updateProfilePicture = formdata => async dispatch => {
   try {
