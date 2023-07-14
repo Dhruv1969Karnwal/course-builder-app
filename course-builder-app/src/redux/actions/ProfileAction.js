@@ -144,3 +144,34 @@ export const updateProfilePicture = (formdata) => async dispatch => {
     });
   }
 };
+
+export const addToPlaylist = id => async dispatch => {
+  try {
+    dispatch({ type: 'addToPlaylistRequest' });
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    };
+
+    const { data } = await axios.post(
+      `${server}/addtoplaylist`,
+      {
+        id,
+      },
+      config
+    );
+
+    dispatch({
+      type: 'addToPlaylistSuccess',
+      payload: data.message,
+    });
+  } catch (error) {
+    dispatch({
+      type: 'addToPlaylistFail',
+      payload: error.response.data.message,
+    });
+  }
+};
+

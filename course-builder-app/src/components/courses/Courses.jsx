@@ -11,11 +11,12 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Line } from 'react-chartjs-2';
 import './Course.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCourses } from '../../redux/actions/CourseAction';
 import { toast } from 'react-hot-toast';
+import { addToPlaylist } from '../../redux/actions/ProfileAction';
+import { getMyProfile } from '../../redux/actions/UserAction';
 
 const Course = ({
   views,
@@ -26,6 +27,7 @@ const Course = ({
   creator,
   description,
   lectureCount,
+  loading
 }) => {
   return (
     <VStack className="course" alignItems={['center', 'flex-start']}>
@@ -70,6 +72,7 @@ const Course = ({
           variant={'ghost'}
           colorScheme="yellow"
           onClick={() => addToPlaylistHandler(id)}
+          isLoading={loading}
         >
           Add to Playlist
         </Button>
@@ -83,9 +86,12 @@ const Courses = () => {
   const [category, setCategory] = useState('');
 
   const dispatch = useDispatch();
-  const { loading, courses, error } = useSelector(state => state.course);
+  const { loading, courses, error, message } = useSelector(state => state.course);
 
-  const addToPlaylistHandler = courseId => {};
+  const addToPlaylistHandler = async courseId => {
+    await dispatch(addToPlaylist(courseId))
+    dispatch(getMyProfile())
+  };
 
   const categories = [
     'Web Development',
@@ -103,7 +109,11 @@ const Courses = () => {
       toast.error(error);
       dispatch({ type: 'clearError' });
     }
-  }, [category, keyword, dispatch, error]);
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+    }
+  }, [category, keyword, dispatch, error, message]);
   return (
     <Container minH={'95vh'} maxW={'container.lg'} padding={'8'}>
       <Heading children="All Courses" m={'8'} />
@@ -151,6 +161,7 @@ const Courses = () => {
               creator={item.createdBy}
               description={item.description}
               lectureCount={item.numOfVideos}
+              loading={loading}
             />
           ))
         ) : (
