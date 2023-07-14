@@ -28,7 +28,10 @@ import {
   updateProfilePicture,
 } from '../../redux/actions/ProfileAction';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMyProfile } from '../../redux/actions/UserAction';
+import {
+  cancelSubscription,
+  getMyProfile,
+} from '../../redux/actions/UserAction';
 import { toast } from 'react-hot-toast';
 
 const Profile = ({ user }) => {
@@ -37,6 +40,11 @@ const Profile = ({ user }) => {
   const dispatch = useDispatch();
 
   const { loading, error, message } = useSelector(state => state.profile);
+  const {
+    loading: subscriptionLoading,
+    error: subscriptionError,
+    message: subscriptionMessage,
+  } = useSelector(state => state.subscription);
 
   const removeFromPlaylistHandler = async id => {
     await dispatch(removeFromPlaylist(id));
@@ -52,6 +60,10 @@ const Profile = ({ user }) => {
     dispatch(getMyProfile());
   };
 
+  const cancelSubsciptionHandler = () => {
+    dispatch(cancelSubscription());
+  };
+
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -61,7 +73,16 @@ const Profile = ({ user }) => {
       toast.success(message);
       dispatch({ type: 'clearMessage' });
     }
-  }, [dispatch, error, message]);
+    if (subscriptionError) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+    if (subscriptionMessage) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+      dispatch(getMyProfile())
+    }
+  }, [dispatch, error, message, subscriptionMessage, subscriptionError]);
   const dateString = user.createdAT.split('T')[0];
   const parts = dateString.split('-');
   const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
@@ -100,7 +121,12 @@ const Profile = ({ user }) => {
             <HStack>
               <Text children="Subscription" fontWeight={'bold'} />
               {user.subscription && user.subscription.status === 'active' ? (
-                <Button color="yellow.500" variant={'unstyled'}>
+                <Button
+                  color="yellow.500"
+                  variant={'unstyled'}
+                  onClick={cancelSubsciptionHandler}
+                  isLoading={subscriptionLoading}
+                >
                   Cancel Subscription
                 </Button>
               ) : (
