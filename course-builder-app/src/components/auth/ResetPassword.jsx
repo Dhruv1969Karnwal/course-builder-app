@@ -31,7 +31,7 @@ const ResetPassword = () => {
         dispatch({type:"clearMessage"})
         navigate('/login')
       }
-    },[dispatch, error, message])
+    },[dispatch, error, message, navigate])
   return (
     <Container py={'19'} h={'90vh'}>
       <form onSubmit={submitHandler}>

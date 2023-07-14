@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { changePassword } from '../../redux/actions/ProfileAction';
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const ChangePassword = () => {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
 
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     const submitHandler = e => {
       e.preventDefault();
@@ -23,8 +25,9 @@ const ChangePassword = () => {
       if(message){
         toast.success(message)
         dispatch({type:"clearMessage"})
+        navigate('/profile')
       }
-    }, [dispatch, error, message])
+    }, [dispatch, error, message, navigate])
   return (
     <Container py={'16'} minH={'90vh'}>
         <form onSubmit={submitHandler}>
