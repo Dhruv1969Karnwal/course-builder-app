@@ -1,109 +1,125 @@
-import { createReducer} from "@reduxjs/toolkit"
+import { createReducer } from '@reduxjs/toolkit';
 
-export const userReducer = createReducer({},{
-    loginRequest:(state) => {
-        state.loading = true
+export const userReducer = createReducer(
+  {},
+  {
+    loginRequest: state => {
+      state.loading = true;
     },
-    loginSuccess:(state, action) => {
-        state.loading = false
-        state.isAuthenticated = true
-        state.user = action.payload.user
-        state.message = action.payload.message
+    loginSuccess: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.message = action.payload.message;
     },
-    loginFail:(state,action) => {
-        state.loading = false
-        state.isAuthenticated = false
-        state.error = action.payload
+    loginFail: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.error = action.payload;
     },
-    loginUserRequest:(state) => {
-        state.loading = true
+    loginUserRequest: state => {
+      state.loading = true;
     },
-    loginUserSuccess:(state, action) => {
-        state.loading = false
-        state.isAuthenticated = true
-        state.user = action.payload
+    loginUserSuccess: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = action.payload;
     },
-    loginUserFail:(state,action) => {
-        state.loading = false
-        state.isAuthenticated = false
-        state.error = action.payload
+    loginUserFail: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.error = action.payload;
     },
-    logoutRequest:(state) => {
-        state.loading = true
+    logoutRequest: state => {
+      state.loading = true;
     },
-    logoutSuccess:(state, action) => {
-        state.loading = false
-        state.isAuthenticated = false
-        state.user = null
-        state.message = action.payload
+    logoutSuccess: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+      state.message = action.payload;
     },
-    logoutFail:(state,action) => {
-        state.loading = false
-        state.isAuthenticated = true
-        state.error = action.payload
-    },
-
-    registerRequest:(state) => {
-        state.loading = true
-    },
-    registerSuccess:(state, action) => {
-        state.loading = false
-        state.isAuthenticated = true
-        state.user = action.payload.user
-        state.message = action.payload.message
-    },
-    registerFail:(state,action) => {
-        state.loading = false
-        state.isAuthenticated = false
-        state.error = action.payload
-    },
-    clearError: (state) => {
-        state.error= null
-    },
-    clearMessage: (state) => {
-        state.message = null
+    logoutFail: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.error = action.payload;
     },
 
-})
+    registerRequest: state => {
+      state.loading = true;
+    },
+    registerSuccess: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.message = action.payload.message;
+    },
+    registerFail: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.error = action.payload;
+    },
+    clearError: state => {
+      state.error = null;
+    },
+    clearMessage: state => {
+      state.message = null;
+    },
+  }
+);
 
-export const profileReducer = createReducer({},{
-    updateProfileRequest:(state) => {
-        state.loading= true
+export const profileReducer = createReducer(
+  {},
+  {
+    updateProfileRequest: state => {
+      state.loading = true;
     },
-    updateProfileSuccess:(state, action) => {
-        state.loading = false
-        state.message = action.payload
+    updateProfileSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
     },
-    updateProfileFail:(state, action) => {
-        state.loading = false
-        state.error = action.payload
+    updateProfileFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
     },
-    updateProfilePictureRequest:(state) => {
-        state.loading= true
+    updateProfilePictureRequest: state => {
+      state.loading = true;
     },
-    updateProfilePictureSuccess:(state, action) => {
-        state.loading = false
-        state.message = action.payload
+    updateProfilePictureSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
     },
-    updateProfilePictureFail:(state, action) => {
-        state.loading = false
-        state.error = action.payload
+    updateProfilePictureFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
     },
-    changePasswordRequest:(state) => {
-        state.loading= true
+    changePasswordRequest: state => {
+      state.loading = true;
     },
-    changePasswordSuccess:(state, action) => {
-        state.loading = false
-        state.message = action.payload
+    changePasswordSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
     },
-    changePasswordFail:(state, action) => {
-        state.loading = false
-        state.error = action.payload
+    changePasswordFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
     },
-    clearError: (state) => {
-        state.error= null
+    forgetPasswordRequest: state => {
+      state.loading = true;
     },
-    clearMessage: (state) => {
-        state.message = null
+    forgetPasswordSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
     },
-})
+    forgetPasswordFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    clearError: state => {
+      state.error = null;
+    },
+    clearMessage: state => {
+      state.message = null;
+    },
+  }
+);
