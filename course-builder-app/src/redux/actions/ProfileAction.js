@@ -118,7 +118,7 @@ export const resetPassword = (token, password) => async dispatch => {
   }
 };
 
-export const updateProfilePicture = formdata => async dispatch => {
+export const updateProfilePicture = (formdata) => async dispatch => {
   try {
     dispatch({
       type: 'updateProfilePictureRequest',

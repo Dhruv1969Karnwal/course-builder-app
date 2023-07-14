@@ -9,10 +9,13 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
-import "./Course.css"
+import './Course.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllCourses } from '../../redux/actions/CourseAction';
+import { toast } from 'react-hot-toast';
 
 const Course = ({
   views,
@@ -59,11 +62,17 @@ const Course = ({
         children={`Views - ${views}`}
         textTransform={'uppercase'}
       />
-      <Stack direction={['column', 'row']} alignItems={"center"}>
+      <Stack direction={['column', 'row']} alignItems={'center'}>
         <Link to={`/course/${id}`}>
-          <Button colorScheme='yellow'>Watch Now</Button>
+          <Button colorScheme="yellow">Watch Now</Button>
         </Link>
-        <Button variant={"ghost"} colorScheme='yellow' onClick={() => addToPlaylistHandler(id)}>Add to Playlist</Button>
+        <Button
+          variant={'ghost'}
+          colorScheme="yellow"
+          onClick={() => addToPlaylistHandler(id)}
+        >
+          Add to Playlist
+        </Button>
       </Stack>
     </VStack>
   );
@@ -72,9 +81,11 @@ const Course = ({
 const Courses = () => {
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
-  const addToPlaylistHandler = () => {
 
-  }
+  const dispatch = useDispatch();
+  const { loading, courses, error } = useSelector(state => state.course);
+
+  const addToPlaylistHandler = courseId => {};
 
   const categories = [
     'Web Development',
@@ -84,6 +95,15 @@ const Courses = () => {
     'Data Science',
     'Game Development',
   ];
+
+  useEffect(() => {
+    dispatch(getAllCourses(category, keyword));
+
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+  }, [category, keyword, dispatch, error]);
   return (
     <Container minH={'95vh'} maxW={'container.lg'} padding={'8'}>
       <Heading children="All Courses" m={'8'} />
@@ -119,16 +139,23 @@ const Courses = () => {
         justifyContent={['flex-start', 'space-evenly']}
         alignItems={['center', 'flex-start']}
       >
-        <Course
-          title={'Sample1'}
-          description={'Smaple1'}
-          views={23}
-          imageSrc={'sample1'}
-          id={'sample1'}
-          creator={'sample1'}
-          lectureCount={2}
-          addToPlaylistHandler={addToPlaylistHandler}
-        />
+        {courses.length > 0 ? (
+          courses?.map((item, index) => (
+            <Course
+              key={item._id}
+              views={item.views}
+              title={item.title}
+              imageSrc={item.poster.url}
+              id={item._id}
+              addToPlaylistHandler={addToPlaylistHandler}
+              creator={item.createdBy}
+              description={item.description}
+              lectureCount={item.numOfVideos}
+            />
+          ))
+        ) : (
+          <Heading children={'Courses not found'} mt="4" />
+        )}
       </Stack>
     </Container>
   );
