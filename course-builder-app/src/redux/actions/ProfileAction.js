@@ -174,4 +174,26 @@ export const addToPlaylist = id => async dispatch => {
     });
   }
 };
+export const removeFromPlaylist = id => async dispatch => {
+  try {
+    dispatch({ type: 'removeFromPlaylistRequest' });
+    const config = {
+      withCredentials: true,
+    };
 
+    const { data } = await axios.delete(
+      `${server}/removefromplaylist?id=${id}`,
+      config
+    );
+
+    dispatch({
+      type: 'removeFromPlaylistSuccess',
+      payload: data.message,
+    });
+  } catch (error) {
+    dispatch({
+      type: 'removeFromPlaylistFail',
+      payload: error.response.data.message,
+    });
+  }
+};

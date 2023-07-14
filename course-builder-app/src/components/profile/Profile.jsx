@@ -23,16 +23,26 @@ import { Link } from 'react-router-dom';
 import my_profile from '../../assets/images/my_profile.jpeg';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { fileUploadCss } from '../auth/Register';
-import { updateProfilePicture } from '../../redux/actions/ProfileAction';
+import {
+  removeFromPlaylist,
+  updateProfilePicture,
+} from '../../redux/actions/ProfileAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMyProfile } from '../../redux/actions/UserAction';
 import { toast } from 'react-hot-toast';
 
 const Profile = ({ user }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+
   const dispatch = useDispatch();
-  const { loading, error, message } = useSelector(state=>state.profile);
-  const removeFromPlaylistHandler = () => {};
+
+  const { loading, error, message } = useSelector(state => state.profile);
+
+  const removeFromPlaylistHandler = async id => {
+    await dispatch(removeFromPlaylist(id));
+    dispatch(getMyProfile());
+  };
+
   const changeImageSubmitHandler = async (e, image) => {
     e.preventDefault();
     const myForm = new FormData();
@@ -43,15 +53,15 @@ const Profile = ({ user }) => {
   };
 
   useEffect(() => {
-    if(error){
-      toast.error(error)
-      dispatch({type:"clearError"})
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
     }
-    if(message){
-      toast.success(message)
-      dispatch({type:"clearMessage"})
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
     }
-  }, [dispatch, error, message])
+  }, [dispatch, error, message]);
   const dateString = user.createdAT.split('T')[0];
   const parts = dateString.split('-');
   const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
@@ -68,7 +78,7 @@ const Profile = ({ user }) => {
       >
         <VStack>
           <Avatar boxSize={'48'} src={user.avatar.url} />
-          <Button  colorScheme="yellow" variant={'ghost'} onClick={onOpen}>
+          <Button colorScheme="yellow" variant={'ghost'} onClick={onOpen}>
             Change Photo
           </Button>
         </VStack>
@@ -129,7 +139,10 @@ const Profile = ({ user }) => {
                     Watch Now
                   </Button>
                 </Link>
-                <Button onClick={() => removeFromPlaylistHandler(item.course)} >
+                <Button
+                  isLoading={loading}
+                  onClick={() => removeFromPlaylistHandler(item.course)}
+                >
                   <RiDeleteBin7Fill />
                 </Button>
               </HStack>
@@ -150,7 +163,12 @@ const Profile = ({ user }) => {
 
 export default Profile;
 
-function ChangePhotoBox({ isOpen, onClose, changeImageSubmitHandler, loading }) {
+function ChangePhotoBox({
+  isOpen,
+  onClose,
+  changeImageSubmitHandler,
+  loading,
+}) {
   const [image, setImage] = useState('');
   const [imagePrev, setImagePrev] = useState('');
 
@@ -187,7 +205,12 @@ function ChangePhotoBox({ isOpen, onClose, changeImageSubmitHandler, loading }) 
                   onChange={changeImage}
                 />
 
-                <Button isLoading={loading} w="full" colorScheme={'yellow'} type="submit">
+                <Button
+                  isLoading={loading}
+                  w="full"
+                  colorScheme={'yellow'}
+                  type="submit"
+                >
                   Change
                 </Button>
               </VStack>

@@ -126,6 +126,18 @@ export const profileReducer = createReducer(
       state.loading = false;
       state.error = action.payload;
     },
+    removeFromPlaylistRequest: state => {
+      state.loading = true;
+    },
+    removeFromPlaylistSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    removeFromPlaylistFail: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.error = action.payload;
+    },
     clearError: state => {
       state.error = null;
     },

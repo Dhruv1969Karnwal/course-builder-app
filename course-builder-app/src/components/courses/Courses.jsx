@@ -10,7 +10,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Course.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCourses } from '../../redux/actions/CourseAction';
@@ -88,6 +88,8 @@ const Courses = () => {
   const dispatch = useDispatch();
   const { loading, courses, error, message } = useSelector(state => state.course);
 
+  const navigate = useNavigate()
+
   const addToPlaylistHandler = async courseId => {
     await dispatch(addToPlaylist(courseId))
     dispatch(getMyProfile())
@@ -104,7 +106,6 @@ const Courses = () => {
 
   useEffect(() => {
     dispatch(getAllCourses(category, keyword));
-
     if (error) {
       toast.error(error);
       dispatch({ type: 'clearError' });
@@ -112,6 +113,7 @@ const Courses = () => {
     if (message) {
       toast.success(message);
       dispatch({ type: 'clearMessage' });
+      // navigate('/profile')
     }
   }, [category, keyword, dispatch, error, message]);
   return (
