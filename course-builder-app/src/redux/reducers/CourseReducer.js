@@ -3,6 +3,7 @@ import { createReducer } from '@reduxjs/toolkit';
 export const courseReducer = createReducer(
   {
     courses: [],
+    lectures: [],
   },
   {
     allCoursesRequest: state => {
@@ -24,6 +25,17 @@ export const courseReducer = createReducer(
       state.message = action.payload;
     },
     addToPlaylistFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    getCourseLecturesRequest: state => {
+      state.loading = true;
+    },
+    getCourseLecturesSuccess: (state, action) => {
+      state.loading = false;
+      state.lectures = action.payload;
+    },
+    getCourseLecturesFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

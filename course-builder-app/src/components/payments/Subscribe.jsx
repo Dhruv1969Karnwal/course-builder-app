@@ -20,6 +20,7 @@ const Subscribe = ({user}) => {
   const [key, setKey] = useState("");
 
   const {loading, error, subscriptionId} = useSelector(state=>state.subscription)
+  const {error:courseError} = useSelector(state=>state.course)
 
   const subscribeHandler = async  () => {
 
@@ -34,6 +35,10 @@ const Subscribe = ({user}) => {
   useEffect(() => {
     if(error){
       toast.error(error)
+      dispatch({type:"clearError"})
+    }
+    if(courseError){
+      toast.error(courseError)
       dispatch({type:"clearError"})
     }
     if(subscriptionId){
@@ -63,7 +68,7 @@ const Subscribe = ({user}) => {
       }
       openPrpUp()
     }
-  },[dispatch, error, user.name, user.email, key, subscriptionId])
+  },[dispatch, error, user.name, user.email, key, subscriptionId, courseError])
 
 
   return (
