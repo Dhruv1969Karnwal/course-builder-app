@@ -22,13 +22,20 @@ import { RiDeleteBin7Fill } from 'react-icons/ri';
 import my_profile from '../../../assets/images/my_profile.jpeg';
 import CourseModal from '../CourseModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllCourses, getCourseLectures } from '../../../redux/actions/CourseAction';
-import { addLecture, deleteCourse } from '../../../redux/actions/AmdinAction';
+import {
+  getAllCourses,
+  getCourseLectures,
+} from '../../../redux/actions/CourseAction';
+import {
+  addLecture,
+  deleteCourse,
+  deleteLecture,
+} from '../../../redux/actions/AmdinAction';
 import { toast } from 'react-hot-toast';
 const AdminCourses = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [courseIdLecture, setCourseIdLecture] = useState()
-  const [courseTitleLecture, setCourseTitleLecture] = useState()
+  const [courseId, setCourseId] = useState();
+  const [courseTitle, setCourseTitle] = useState();
   // const courses = [
   //   {
   //     _id: 'jfnsfhishfoi',
@@ -43,44 +50,53 @@ const AdminCourses = () => {
   //   },
   // ];
 
-  const {courses, lectures} = useSelector(state=>state.course)
-  const { loading, error, message} = useSelector(state=>state.admin)
-  const dispatch = useDispatch()
+  const { courses, lectures } = useSelector(state => state.course);
+  const { loading, error, message } = useSelector(state => state.admin);
+  const dispatch = useDispatch();
 
   const courseDetailsHandler = (courseId, title) => {
-    dispatch(getCourseLectures(courseId))
+    dispatch(getCourseLectures(courseId));
     onOpen();
-    setCourseIdLecture(courseId)
-    setCourseTitleLecture(title)
-
+    setCourseId(courseId);
+    setCourseTitle(title);
   };
   const deleteButtonHandler = courseId => {
-    dispatch(deleteCourse(courseId))
+    dispatch(deleteCourse(courseId));
   };
-  const deleteLectureButtonHandler = ({ courseId, lectureId }) => {};
-  const addLectureButtonHandler = (e,courseId,title,description,videos) => {
-    e.preventDefault()
-    const myForm = new FormData()
+  const deleteLectureButtonHandler = async ( courseId, lectureId ) => {
+   await dispatch(deleteLecture(courseId, lectureId));
+   dispatch(getCourseLectures(courseId))
+  console.log(":Hide")
+  };
+  const addLectureButtonHandler = async (
+    e,
+    courseId,
+    title,
+    description,
+    videos
+  ) => {
+    e.preventDefault();
+    const myForm = new FormData();
 
-    myForm.append('title', title)
-    myForm.append('description', description)
-    myForm.append('file', videos)
-    dispatch(addLecture(courseId, myForm))
+    myForm.append('title', title);
+    myForm.append('description', description);
+    myForm.append('file', videos);
+    await dispatch(addLecture(courseId, myForm));
+    dispatch(getCourseLectures(courseId));
   };
 
   useEffect(() => {
-    if(error){
-      toast.error(error)
-      dispatch({type:"clearError"})
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
     }
-    if(message){
-      toast.success(message)
-      dispatch({type:"clearMessage"})
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
     }
 
-    dispatch(getAllCourses())
-  },[dispatch, error, message])
-
+    dispatch(getAllCourses());
+  }, [dispatch, error, message]);
 
   return (
     <Grid
@@ -130,8 +146,8 @@ const AdminCourses = () => {
         <CourseModal
           isOpen={isOpen}
           onClose={onClose}
-          id={courseIdLecture}
-          courseTitle={courseTitleLecture}
+          id={courseId}
+          courseTitle={courseTitle}
           deleteLectureButtonHandler={deleteLectureButtonHandler}
           addLectureButtonHandler={addLectureButtonHandler}
           lectures={lectures}

@@ -81,7 +81,7 @@ const CourseModal = ({
                   lectureId={item?._id}
                   courseId={id}
                   deleteLectureButtonHandler={deleteLectureButtonHandler}
-                  isLoading={loading}
+                  loading={loading}
                 />
               ))}
             </Box>
@@ -150,7 +150,10 @@ function VideoCard({
   lectureId,
   courseId,
   deleteLectureButtonHandler,
+  loading
 }) {
+  // console.log(courseId, lectureId)
+
   return (
     <Stack
       direction={['column', 'row']}
@@ -165,6 +168,7 @@ function VideoCard({
         <Text children="description" />
       </Box>
       <Button
+      isLoading={loading}
         color={'purple.600'}
         onClick={() => deleteLectureButtonHandler(courseId, lectureId)}
       >
