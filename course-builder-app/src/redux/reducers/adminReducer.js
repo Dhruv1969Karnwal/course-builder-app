@@ -25,6 +25,17 @@ export const adminReducer = createReducer(
       state.loading = false;
       state.error = action.payload;
     },
+    deleteUserRequest: state => {
+      state.loading = true;
+    },
+    deleteUserSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    deleteUserFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     createCourseRequest: state => {
       state.loading = true;
     },

@@ -19,6 +19,7 @@ import SideBar from '../SideBar';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  deleteUser,
   getAllUsers,
   updateUserRole,
 } from '../../../redux/actions/AmdinAction';
@@ -39,12 +40,12 @@ const Users = () => {
   const { users, loading, error, message } = useSelector(state => state.admin);
 
   const updateHandler =  userId => {
-    // console.log('update user');
     dispatch(updateUserRole(userId));
-    // dispatch(getAllUsers())
   };
 
-  const deleteButtonHandler = userId => {};
+  const deleteButtonHandler = userId => {
+    dispatch(deleteUser(userId))
+  };
 
   useEffect(() => {
     if (error) {
