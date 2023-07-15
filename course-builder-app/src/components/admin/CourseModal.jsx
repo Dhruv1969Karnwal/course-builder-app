@@ -26,7 +26,8 @@ const CourseModal = ({
   courseTitle,
   deleteLectureButtonHandler,
   addLectureButtonHandler,
-  lectures = [1,2,3,4,5,,6,7,8],
+  lectures =[],
+  loading,
 }) => {
   //   const courseTitle = 'react course';
   const [title, setTitle] = useState('');
@@ -42,18 +43,23 @@ const CourseModal = ({
 
     reader.onloadend = () => {
       setVideoPrev(reader.result);
-      setVideo(file)
+      setVideo(file);
     };
   };
   const closeHandler = () => {
-    setTitle('')
-    setDescription('')
-    setVideo('')
-    setVideoPrev('')
-    onClose()
-  }
+    setTitle('');
+    setDescription('');
+    setVideo('');
+    setVideoPrev('');
+    onClose();
+  };
   return (
-    <Modal isOpen={isOpen} size={'full'} onClose={closeHandler} scrollBehavior='outside'>
+    <Modal
+      isOpen={isOpen}
+      size={'full'}
+      onClose={closeHandler}
+      scrollBehavior="outside"
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{courseTitle}</ModalHeader>
@@ -67,19 +73,18 @@ const CourseModal = ({
               </Box>
               <Heading children={'Lectures'} size={'lg'} />
 
-              {
-                lectures.map((item, index) => (
-                    <VideoCard
-                    key={index}
-                num={index+1}
-                title="react course"
-                description="This is a intro lecture where you we know the basics of react"
-                lectureId="cnbcjkz"
-                courseId={id}
-                deleteLectureButtonHandler={deleteLectureButtonHandler}
-              />
-                ))
-              }
+              {lectures?.map((item, index) => (
+                <VideoCard
+                  key={index}
+                  num={index + 1}
+                  title={item?.title}
+                  description={item?.description}
+                  lectureId={item?._id}
+                  courseId={id}
+                  deleteLectureButtonHandler={deleteLectureButtonHandler}
+                  isLoading={loading}
+                />
+              ))}
             </Box>
             <Box>
               <form
@@ -106,37 +111,31 @@ const CourseModal = ({
                     onChange={e => setDescription(e.target.value)}
                   />
                   <Input
-                    focusBorderColor="purple.300"
-                    placeholder="Title"
-                    value={title}
-                    onChange={e => setTitle(e.target.value)}
+                    accept="video/mp4"
+                    required
+                    type={'file'}
+                    focusBorderColor="yellow.500"
+                    css={{
+                      '&::file-selector-button': {
+                        ...fileUploadCss,
+                        color: 'purple',
+                      },
+                    }}
+                    onChange={changeVideoHandler}
                   />
-                  <Input
-              accept="video/mp4"
-              required
-              type={'file'}
-              focusBorderColor="yellow.500"
-              css={{
-                '&::file-selector-button': {
-                    ...fileUploadCss,
-                    color:"purple"
-                }
-              }}
-              onChange={changeVideoHandler}
-            />
-            {
-                videoPrev && (
-                    <video controlsList='noDownload' controls src={videoPrev} />
-                )
-            }
-            <Button w='full' colorScheme='purple' type='submit'>Upload</Button>
+                  {videoPrev && (
+                    <video controlsList="noDownload" controls src={videoPrev} />
+                  )}
+                  <Button w="full" colorScheme="purple" type="submit" isLoading={loading}>
+                    Upload
+                  </Button>
                 </VStack>
               </form>
             </Box>
           </Grid>
         </ModalBody>
         <ModalFooter>
-            <Button onClick={closeHandler}> Close</Button>
+          <Button onClick={closeHandler}> Close</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
