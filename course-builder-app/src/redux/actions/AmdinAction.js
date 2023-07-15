@@ -61,9 +61,11 @@ export const addLecture = (id, formData) => async dispatch => {
       },
       withCredentials: true,
     };
-    const { data } = await axios.post(`${server}/course/${id}`, 
-    formData, 
-    config);
+    const { data } = await axios.post(
+      `${server}/course/${id}`,
+      formData,
+      config
+    );
 
     dispatch({
       type: 'addLectureSuccess',
@@ -83,8 +85,10 @@ export const deleteLecture = (courseId, lectureId) => async dispatch => {
     const config = {
       withCredentials: true,
     };
-    const { data } = await axios.delete(`${server}/lecture?courseId=${courseId}&lectureId=${lectureId}`,
-    config);
+    const { data } = await axios.delete(
+      `${server}/lecture?courseId=${courseId}&lectureId=${lectureId}`,
+      config
+    );
 
     dispatch({
       type: 'deleteLectureSuccess',
@@ -104,8 +108,7 @@ export const getAllUsers = () => async dispatch => {
     const config = {
       withCredentials: true,
     };
-    const { data } = await axios.get(`${server}/admin/users`,
-    config);
+    const { data } = await axios.get(`${server}/admin/users`, config);
 
     dispatch({
       type: 'getAllUsersSuccess',
@@ -114,6 +117,26 @@ export const getAllUsers = () => async dispatch => {
   } catch (error) {
     dispatch({
       type: 'getAllUsersFail',
+      payload: error.response.data.message,
+    });
+  }
+};
+export const updateUserRole = id => async dispatch => {
+  try {
+    dispatch({ type: 'updateUserRoleRequest' });
+
+    const config = {
+      withCredentials: true,
+    };
+    const { data } = await axios.put(`${server}/admin/user/${id}`, {}, config);
+
+    dispatch({
+      type: 'updateUserRoleSuccess',
+      payload: data.message,
+    });
+  } catch (error) {
+    dispatch({
+      type: 'updateUserRoleFail',
       payload: error.response.data.message,
     });
   }
