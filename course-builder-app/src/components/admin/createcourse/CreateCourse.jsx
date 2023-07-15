@@ -1,9 +1,12 @@
 
-import { Box, Button, Container, Grid, Heading, Image, Input, Select, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import {  Button, Container, Grid, Heading, Image, Input, Select, VStack } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
 // import cursor from '../../../assets/images/cursor.png';
 import SideBar from '../SideBar';
 import { fileUploadCss } from '../../auth/Register';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCourse } from '../../../redux/actions/AmdinAction';
+import { toast } from 'react-hot-toast';
 const categories = [
     'Web Development',
     'Artificial Intellegence',
@@ -21,6 +24,9 @@ const CreateCourse = () => {
     const [imagePrev, setImagePrev] = useState('');
     const [image, setImage] = useState('');
 
+    const dispatch = useDispatch()
+    const {loading, error, message} = useSelector(state=>state.admin)
+
     const changeImageHandler = e => {
         const file = e.target.files[0];
         const reader = new FileReader();
@@ -32,6 +38,35 @@ const CreateCourse = () => {
           setImage(file)
         };
       };
+      // title, description, category, createdBy
+      const submitHandler = (e) => {
+        e.preventDefault();
+
+        const myForm = new FormData();
+        myForm.append('title', title);
+        myForm.append('description', description);
+        myForm.append('createdBy', createdBy);
+        myForm.append('category', category);
+        myForm.append('file', image);
+
+        // console.log(data)
+        // for (let entry of myForm.entries()) {
+        //   console.log(entry[0], entry[1]);
+        // }
+
+        dispatch(createCourse(myForm))
+      }
+
+      useEffect(() => {
+        if(error){
+          toast.error(error)
+          dispatch({type: 'clearError'})
+        }
+        if(message){
+          toast.success(message)
+          dispatch({type: 'clearMessage'})
+        }
+      },[error, message, dispatch])
   return (
     <Grid
     // css={{
@@ -43,7 +78,7 @@ const CreateCourse = () => {
 
       <Container py={'16'}>
         
-        <form>
+        <form onSubmit={submitHandler}>
         <Heading textTransform={'uppercase'} children="Create Course" my='16' textAlign={['center','left']} />
         <VStack m='auto' spacing={'8'}>
         <Input
@@ -94,7 +129,7 @@ const CreateCourse = () => {
                     <Image src={imagePrev} boxSize={'64'} objectFit={'contain'} />
                 )
             }
-            <Button w='full' colorScheme='purple' type='submit'>Create</Button>
+            <Button w='full' colorScheme='purple' type='submit' isLoading={loading}>Create</Button>
         </VStack>
         </form>
 
