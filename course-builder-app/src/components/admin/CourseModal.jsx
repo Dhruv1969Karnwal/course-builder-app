@@ -29,7 +29,6 @@ const CourseModal = ({
   lectures =[],
   loading,
 }) => {
-  //   const courseTitle = 'react course';
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [video, setVideo] = useState('');
@@ -69,7 +68,7 @@ const CourseModal = ({
             <Box p={['0', '16']}>
               <Box my={'16'}>
                 <Heading children={courseTitle} />
-                <Heading children={`#{id}`} size={'sm'} opacity={'0.4'} />
+                <Heading children={`${id}`} size={'sm'} opacity={'0.4'} />
               </Box>
               <Heading children={'Lectures'} size={'lg'} />
 

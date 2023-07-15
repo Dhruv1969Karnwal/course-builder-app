@@ -15,7 +15,7 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // import cursor from '../../../assets/images/cursor.png';
 import SideBar from '../SideBar';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
@@ -23,10 +23,12 @@ import my_profile from '../../../assets/images/my_profile.jpeg';
 import CourseModal from '../CourseModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCourses, getCourseLectures } from '../../../redux/actions/CourseAction';
-import { deleteCourse } from '../../../redux/actions/AmdinAction';
+import { addLecture, deleteCourse } from '../../../redux/actions/AmdinAction';
 import { toast } from 'react-hot-toast';
 const AdminCourses = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const [courseIdLecture, setCourseIdLecture] = useState()
+  const [courseTitleLecture, setCourseTitleLecture] = useState()
   // const courses = [
   //   {
   //     _id: 'jfnsfhishfoi',
@@ -45,9 +47,12 @@ const AdminCourses = () => {
   const { loading, error, message} = useSelector(state=>state.admin)
   const dispatch = useDispatch()
 
-  const courseDetailsHandler = courseId => {
+  const courseDetailsHandler = (courseId, title) => {
     dispatch(getCourseLectures(courseId))
     onOpen();
+    setCourseIdLecture(courseId)
+    setCourseTitleLecture(title)
+
   };
   const deleteButtonHandler = courseId => {
     dispatch(deleteCourse(courseId))
@@ -55,6 +60,12 @@ const AdminCourses = () => {
   const deleteLectureButtonHandler = ({ courseId, lectureId }) => {};
   const addLectureButtonHandler = (e,courseId,title,description,videos) => {
     e.preventDefault()
+    const myForm = new FormData()
+
+    myForm.append('title', title)
+    myForm.append('description', description)
+    myForm.append('file', videos)
+    dispatch(addLecture(courseId, myForm))
   };
 
   useEffect(() => {
@@ -119,8 +130,8 @@ const AdminCourses = () => {
         <CourseModal
           isOpen={isOpen}
           onClose={onClose}
-          id={'dnajifbyus'}
-          courseTitle="recat course"
+          id={courseIdLecture}
+          courseTitle={courseTitleLecture}
           deleteLectureButtonHandler={deleteLectureButtonHandler}
           addLectureButtonHandler={addLectureButtonHandler}
           lectures={lectures}
@@ -149,7 +160,7 @@ function Row({ item, courseDetailsHandler, deleteButtonHandler, loading }) {
       <Td isNumeric>
         <HStack justifyContent={'flex-end'}>
           <Button
-            onClick={() => courseDetailsHandler(item._id)}
+            onClick={() => courseDetailsHandler(item._id, item.title)}
             variant={'outline'}
             color={'purple.500'}
             isLoading={loading}
