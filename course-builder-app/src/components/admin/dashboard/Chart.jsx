@@ -22,7 +22,7 @@ ChartJs.register(
   ArcElement,
   Legend
 );
-export const LineChart = () => {
+export const LineChart = ({viewsArray = []}) => {
   const labels = getLastYearMonth();
   const options = {
     responsive: true,
@@ -41,7 +41,7 @@ export const LineChart = () => {
     datasets: [
       {
         label: 'Views',
-        data: [1, 2, 3, 4],
+        data: viewsArray,
         borderColor: 'rgba(107,70,192,0.5)',
         backgroundColor: '#6b46c1',
       },
@@ -50,14 +50,14 @@ export const LineChart = () => {
   return <Line options={options} data={data} />;
 };
 
-export const DoughnutChat = () => {
+export const DoughnutChat = ({ usersData= [] }) => {
   const labels = ['Subscribed', 'Not Subscribed'];
   const data = {
     labels,
     datasets: [
       {
         label: 'Views',
-        data: [3, 20],
+        data: usersData,
         borderColor: ['rgb(62,12,171)', 'rgb(214,42,129)'],
         backgroundColor: ['rgba(62,12,171,0.3)', 'rgba(214,42,129,0.3)'],
         borderWidth: 1,
@@ -68,28 +68,28 @@ export const DoughnutChat = () => {
 };
 
 function getLastYearMonth() {
-    // const labels = [];
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    const currentMonth = new Date().getMonth();
-    // const currentMonth = 8
-    const remainingMonths = months.slice(currentMonth).concat(months.slice(0, currentMonth));
-  
-    // for (let i = 0; i < remainingMonths.length; i++) {
-    //   labels.push(remainingMonths[i]);
-    // }
-  
-    return remainingMonths;
-  }
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  const currentMonth = new Date().getMonth();
+  const monthsFromCurrentToEnd = months.slice(currentMonth + 1);
+  const monthsFromStartToCurrent = months.slice(0, currentMonth + 1);
+
+  const remainingMonths = monthsFromCurrentToEnd.concat(monthsFromStartToCurrent);
+
+  return remainingMonths;
+}
+
+
+
