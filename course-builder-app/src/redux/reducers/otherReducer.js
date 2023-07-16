@@ -14,6 +14,17 @@ export const otherReducer = createReducer(
       state.loading = false;
       state.error = action.payload;
     },
+    requestCourseRequest:(state) => {
+      state.loading = true;
+    },
+    requestCourseSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload
+    },
+    requestCourseFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     clearError: state => {
         state.error = null;
       },

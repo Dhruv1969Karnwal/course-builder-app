@@ -29,3 +29,32 @@ export const contactUs = (name, email, message ) =>
       });
     }
   };
+export const requestCourse = (name, email, course ) =>
+  async dispatch => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }
+      
+      dispatch({ type: 'requestCourseRequest' });
+      const { data } = await axios.post(
+        `${server}/courserequest`,
+        {name, email, course},
+        config
+      );
+      // console.log(data)
+
+      dispatch({
+        type: 'requestCourseSuccess',
+        payload: data.message,
+      });
+    } catch (error) {
+      dispatch({
+        type: 'requestCourseFail',
+        payload: error.response.data.message,
+      });
+    }
+  };
