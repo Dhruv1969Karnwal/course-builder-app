@@ -24,7 +24,7 @@ const Footer = () => {
                 <a href='https://github.com/Dhruv1969Karnwal' target={"_blank"} rel="noreferrer">
                     <TiSocialGithub />
                 </a>
-                <a href='https://github.com/Dhruv1969Karnwal' target={"_blank"} rel="noreferrer">
+                <a href='https://www.behance.net/dhruvkarnwal1' target={"_blank"} rel="noreferrer">
                     <AiFillBehanceCircle />
                 </a>
                 <a href='https://codepen.io/Dhruv1969Karnwal' target={"_blank"} rel="noreferrer">

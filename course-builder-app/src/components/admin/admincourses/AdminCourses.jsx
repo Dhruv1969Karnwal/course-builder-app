@@ -19,7 +19,6 @@ import React, { useEffect, useState } from 'react';
 // import cursor from '../../../assets/images/cursor.png';
 import SideBar from '../SideBar';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
-import my_profile from '../../../assets/images/my_profile.jpeg';
 import CourseModal from '../CourseModal';
 import { useDispatch, useSelector } from 'react-redux';
 import {

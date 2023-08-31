@@ -20,7 +20,6 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import my_profile from '../../assets/images/my_profile.jpeg';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { fileUploadCss } from '../auth/Register';
 import {
@@ -115,7 +114,6 @@ const Profile = ({ user }) => {
           <HStack>
             <Text children="CreatedAt" fontWeight={'bold'} />
             <Text children={formattedDate} />
-            {/* <Text children={user.createdAt} /> */}
           </HStack>
           {user.role !== 'admin' && (
             <HStack>

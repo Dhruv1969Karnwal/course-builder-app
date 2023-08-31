@@ -14,7 +14,6 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-// import cursor from '../../../assets/images/cursor.png';
 import SideBar from '../SideBar';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,7 +22,6 @@ import {
   getAllUsers,
   updateUserRole,
 } from '../../../redux/actions/AmdinAction';
-import Loader from '../../Layout/loader/Loader';
 import { toast } from 'react-hot-toast';
 
 const Users = () => {
