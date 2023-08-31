@@ -59,7 +59,7 @@ const CourseDetail = ({ user }) => {
   return loading ? (
     <Loader />
   ) : (
-    <Grid minH={'90vh'} templateColumns={['1fr', '3fr 1fr']} mt={'10'}>
+    <Grid minH={'90vh'} templateColumns={['1fr', '3fr 1fr']} mt={'20'}>
      {
       lectures && lectures?.length > 0 ? (<>
         <Box>
