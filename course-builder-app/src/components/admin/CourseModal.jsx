@@ -165,7 +165,7 @@ function VideoCard({
     >
       <Box>
         <Heading size={'sm'} children={`#${num} ${title}`} />
-        <Text children="description" />
+        <Text children={description} />
       </Box>
       <Button
       isLoading={loading}
