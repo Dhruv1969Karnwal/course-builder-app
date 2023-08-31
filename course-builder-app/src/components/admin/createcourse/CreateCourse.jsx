@@ -9,6 +9,7 @@ import { createCourse } from '../../../redux/actions/AmdinAction';
 import { toast } from 'react-hot-toast';
 const categories = [
     'Web Development',
+    'UI/UX Design',
     'Artificial Intellegence',
     'Data Structure & Algorithm',
     'App Development',
