@@ -31,6 +31,11 @@ const temp = async () => {
 }
 temp()
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is working on port: ${process.env.PORT}`);
-});
+const setUpAndStartServer = async () => {
+  app.listen(process.env.PORT, () => {
+    console.log(`Server is working on port: ${process.env.PORT}`);
+  });
+}
+
+setUpAndStartServer();
+
