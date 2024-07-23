@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser")
 const {PORT} = require("../src/config/serverConfig")
 const {connectToMongoDB} = require("../src/config/database")
-const {Course} = require("../src/models/Course");
+const {CourseRepository} = require("../src/repositories/index")
 
 const setUpAndStartServer = async () => {
     const app = express();
@@ -17,16 +17,12 @@ const setUpAndStartServer = async () => {
         console.log(`Server is running at Port No. ${PORT}`);
         // console.log(process)
 
-        // To Check if the model is working properly or not
-        
-        // const result = await Course.create({
-        //     "title": "MongoDB",
-        //     "description": "about MongoDB",
-        //     "createdBy":"dh",
-        //     "category":"dh"
-        // });
+        // To Check if the course repository is working properly or not
 
-        // console.log(result);
+        // const repo = new CourseRepository();
+        // const course = await repo.deleteCourse("669fe7cad2d3cfee47515d21")
+
+        // console.log(course);
 
     })
 }
