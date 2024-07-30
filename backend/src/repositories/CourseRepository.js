@@ -6,18 +6,12 @@ class CourseRepository {
             const course = await Course.create(data);
             return course;
         } catch (error) {
-            console.error("Error in creating course",error);
+            console.error("Something went wrong at repository layer");
+            throw{error};
         }
     }
 
-    async deleteCourse(id){
-        try {
-            const course = await Course.deleteOne({_id:id});
-            return course;
-        } catch (error) {
-            console.error("Error in deleting course",error);
-        }
-    }
+    
 }
 
 module.exports = {
