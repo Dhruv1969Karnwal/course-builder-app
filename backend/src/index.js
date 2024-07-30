@@ -2,7 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser")
 const {PORT} = require("../src/config/serverConfig")
 const {connectToMongoDB} = require("../src/config/database")
-const {CourseRepository} = require("../src/repositories/index")
+// const {CourseRepository} = require("../src/repositories/index")
+const apiRoutes = require("./routes/index")
 
 const setUpAndStartServer = async () => {
     const app = express();
@@ -12,6 +13,8 @@ const setUpAndStartServer = async () => {
     // configures Middlewares
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended:true}));
+
+    app.use("/api",apiRoutes)
     
     app.listen(PORT, async () => {
         console.log(`Server is running at Port No. ${PORT}`);
