@@ -195,6 +195,27 @@ const {CourseService} = require("../services/index")
 
 const courseService = new CourseService()
 
+const getAllCourses = async (req,res) => {
+  try {
+    // console.log(req.query);
+    const courses = await courseService.getAllCourses(req.query);
+    return res.status(200).json({
+      data: courses,
+      success: true,
+      message: "Course fetch successfully",
+      error: {}
+    })
+  } catch (error) {
+    console.log("Something went wrong in course controller")
+    return res.status(500).json({
+      data: {},
+      success: false,
+      message : "Not able to fetch a course",
+      error: error
+    })
+  }
+}
+
 const createCourse = async (req,res) => {
   try {
 
@@ -219,4 +240,5 @@ const createCourse = async (req,res) => {
 
 module.exports = {
   createCourse,
+  getAllCourses,
 }
