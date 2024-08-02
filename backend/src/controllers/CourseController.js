@@ -193,6 +193,7 @@
 
 const {CourseService} = require("../services/index")
 
+
 const courseService = new CourseService()
 
 const getAllCourses = async (req,res) => {
@@ -220,7 +221,14 @@ const createCourse = async (req,res) => {
   try {
 
     // console.log("Creating Course",req.body);
-    const course = await courseService.create(req.body);
+    const filteredData = {
+      title: req.body.title,
+      description: req.body.description,
+      category: req.body.category,
+      createdBy: req.body.createdBy,
+    }
+    
+    const course = await courseService.create(filteredData);
     return res.status(200).json({
       data: course,
       success: true,
