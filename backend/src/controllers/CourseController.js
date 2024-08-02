@@ -220,7 +220,7 @@ const createCourse = async (req,res) => {
   try {
 
     // console.log("Creating Course",req.body);
-    const course = await courseService.createCourse(req.body);
+    const course = await courseService.create(req.body);
     return res.status(200).json({
       data: course,
       success: true,

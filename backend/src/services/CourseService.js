@@ -1,8 +1,10 @@
 const {CourseRepository} = require("../repositories/index")
+const {CrudService} = require("./CrudService")
 
-class CourseService {
+class CourseService extends CrudService {
     constructor(){
-        this.courseRepository = new CourseRepository();
+        const courseRepository = new CourseRepository();
+        super(courseRepository)
     }
 
     async getAllCourses(filter){
@@ -15,15 +17,15 @@ class CourseService {
         }
     }
 
-    async createCourse(data) {
-        try {
-            const course = await this.courseRepository.createCourse(data);
-            return course;
-        } catch (error) {
-            console.error("Something went wrong at service layer");
-            throw{error};
-        }
-    }
+    // async createCourse(data) {
+    //     try {
+    //         const course = await this.courseRepository.createCourse(data);
+    //         return course;
+    //     } catch (error) {
+    //         console.error("Something went wrong at service layer");
+    //         throw{error};
+    //     }
+    // }
 }
 
 module.exports = {
