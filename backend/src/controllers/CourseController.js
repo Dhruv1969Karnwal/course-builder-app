@@ -141,7 +141,6 @@
 //   });
 // });
 
-
 // export const deleteLecture = catchAsyncError(async (req, res, next) => {
 //   const { courseId, lectureId } = req.query;
 //   const course = await Course.findById(courseId);
@@ -164,7 +163,6 @@
 
 //   await course.save()
 
-
 //   res.status(200).json({
 //     success: true,
 //     message: "Lecture deleted successfully.",
@@ -183,70 +181,67 @@
 //     totalViews += course.views
 //   }
 
-
 //   stats[0].views = totalViews
 //   stats[0].createdAt = new Date(Date.now())
 //   await stats[0].save()
 // })
 
+const { CourseService } = require("../services/index");
 
+const { ServerErrorCodes, SuccessCodes } = require("../utils/ErrorCode");
 
-const {CourseService} = require("../services/index")
+const courseService = new CourseService();
 
-
-const courseService = new CourseService()
-
-const getAllCourses = async (req,res) => {
+const getAllCourses = async (req, res) => {
   try {
     // console.log(req.query);
     const courses = await courseService.getAllCourses(req.query);
-    return res.status(200).json({
+    return res.status(SuccessCodes.OK).json({
       data: courses,
       success: true,
       message: "Course fetch successfully",
-      error: {}
-    })
+      error: {},
+    });
   } catch (error) {
-    console.log("Something went wrong in course controller")
-    return res.status(500).json({
+    console.log("Something went wrong in course controller");
+    return res.status(ServerErrorCodes.INTERNAL_SERVER_ERROR).json({
       data: {},
       success: false,
-      message : "Not able to fetch a course",
-      error: error
-    })
+      message: "Not able to fetch a course",
+      error: error,
+    });
   }
-}
+};
 
-const createCourse = async (req,res) => {
+const createCourse = async (req, res) => {
   try {
-
     // console.log("Creating Course",req.body);
     const filteredData = {
       title: req.body.title,
       description: req.body.description,
       category: req.body.category,
       createdBy: req.body.createdBy,
-    }
-    
+    };
+
     const course = await courseService.create(filteredData);
-    return res.status(200).json({
+    return res.status(SuccessCodes.CREATED).json({
       data: course,
       success: true,
       message: "Course created successfully",
-      error: {}
-    })
+      error: {},
+    });
   } catch (error) {
-    console.log("Something went wrong in course controller")
-    return res.status(500).json({
+    console.log("Something went wrong in course controller");
+    return res.status(ServerErrorCodes.INTERNAL_SERVER_ERROR).json({
       data: {},
       success: false,
-      message : "Not able to create a course",
-      error: error
-    })
+      message: "Not able to create a course",
+      error: error,
+    });
   }
-}
+};
 
 module.exports = {
   createCourse,
   getAllCourses,
-}
+};

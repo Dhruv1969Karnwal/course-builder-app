@@ -1,3 +1,5 @@
+const {ClientErrorCodes} = require("../utils/ErrorCode")
+
 const validateCreateCourse = async (req, res, next) => {
   if (
     !req.body.title ||
@@ -5,7 +7,7 @@ const validateCreateCourse = async (req, res, next) => {
     !req.body.category ||
     !req.body.createdBy
   ) {
-    return res.status(400).json({
+    return res.status(ClientErrorCodes.BAD_REQUEST).json({
       data: {},
       success: false,
       message: "Invalid Request Body for create course",
